@@ -7,7 +7,6 @@
 </head>
 <body>
 
-
   <div class="keys">
     <div data-key="65" class="key">
       <kbd>A</kbd>
@@ -58,6 +57,37 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  function keyPressed(e) {
+    const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+    // change the effect by chaning the CSS class
+    key.classList.add("playing");
+    playSound(e);
+  }
+
+  function playSound(e) {
+    const key = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    if (key != null){
+      //always start from 0s, or we need to wait for the sound to finish
+      // until we can start a new key.
+      key.currentTime = 0;
+      key.play();
+    } 
+    return;
+  }
+
+  function removeTransition(e) {
+    // e.propertyName are the spesific change in the event
+    // because all the keys has event listeners, we need selection
+    if (e.propertyName != "transform") return;
+    // target is the object triggered the event
+    e.target.classList.remove('playing');
+  }
+
+  document.addEventListener("keydown", keyPressed);
+
+  // instead of adding timeout while playing, we can cancle the added class
+  const keys = document.querySelectorAll('.key');
+  keys.forEach(()=>document.addEventListener("transitionend", removeTransition));
 
 </script>
 
