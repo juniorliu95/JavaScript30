@@ -62,12 +62,38 @@
       background: black;
       position: absolute;
       top: 50%;
+      transform-origin: 100%; /* change the origin of rotation */
     }
 
   </style>
 
   <script>
 
+    function tickRotate() {
+      const date = new Date();
+      let h = date.getHours();
+      const m = date.getMinutes();
+      const s = date.getSeconds();
+      console.log(h, m, s);
+
+      // set the degrees
+      secondH = document.getElementsByClassName("second-hand")[0];
+      degSecond = (s / 60) * 360 + 90;
+      secondH.style.rotate = `${degSecond}deg`;
+
+      minH = document.getElementsByClassName("min-hand")[0];
+      degMin = (m / 60) * 360 + (s / 60) * 6 + 90;
+      minH.style.rotate = `${degMin}deg`;
+
+      hourH = document.getElementsByClassName("hour-hand")[0];
+      if (h > 12) h -= 12;
+      degHour = (h / 12) * 360 + (m / 60) * 30 + 90;
+      hourH.style.rotate = `${degHour}deg`;
+      console.log(degSecond, degMin, degHour);
+
+    };
+    setInterval(tickRotate, 1000);
+    tickRotate()
 
   </script>
 </body>
