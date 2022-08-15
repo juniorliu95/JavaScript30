@@ -21,10 +21,22 @@
   <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
 
   <style>
+    /* jquery style global variables */
+    :root{
+      --base: #ffc600;
+      --spacing: 10;
+      --blur: 10;
+    };
 
-    /*
-      misc styles, nothing to do with CSS variables
-    */
+    /* img{
+      padding: var(--spacing);
+      background: var(--base);
+      filter: blur(var(--blur));
+    }; */
+
+    /* .hl {
+      color: var(--base);
+    }; */
 
     body {
       text-align: center;
@@ -33,18 +45,30 @@
       font-family: 'helvetica neue', sans-serif;
       font-weight: 100;
       font-size: 50px;
-    }
+    };
 
     .controls {
       margin-bottom: 50px;
-    }
+    };
 
     input {
       width: 100px;
-    }
+    };
   </style>
 
   <script>
+    
+    const inputs = Array.from(document.getElementsByTagName("input"));
+    // const inputs = document.querySelectorAll("input");
+
+    function changeImage(e){
+      const id = e.target.id;
+      const change = document.getElementById(id).value;
+      console.log(id, change);
+    };
+
+    inputs.forEach(input => input.addEventListener("change", changeImage));
+    
   </script>
 
 </body>
