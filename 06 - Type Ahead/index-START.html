@@ -16,6 +16,49 @@
   </form>
 <script>
 const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+const data = [];
+fetch(endpoint)
+  .then(response => response.json())
+  .then(json => data.push(...json));
+
+const suggestions = document.querySelector(".suggestions");
+
+function searchJson(value){
+  // remove current results
+  document.querySelectorAll(".suggestions li").forEach(l => l.remove());
+  let res;
+  // console.log(value);
+  if (value == null)
+  {
+    res = data;
+  } else {
+    const reg = new RegExp(value, "gi");
+    res = data.filter(d => d.city.match(reg) || d.state.match(reg));
+  }
+
+  return res;
+};
+
+function makeSuggestions(){
+  if (data == null) return; // wait for data loading...
+  // console.log(this.value); // input
+  const recomendations = searchJson(this.value);
+  const html = recomendations.map(rec => {
+    const reg = new RegExp(this.value, 'gi');
+    const cityName = rec.city.replace(reg, `<span class="hl">${this.value}</span>`);
+    const stateName = rec.state.replace(reg, `<span class="hl">${this.value}</span>`);
+    return `<li>
+              <span>${cityName}, ${stateName}</span>
+              <span>${rec.population}</span>
+            </li>`;
+  }).join(""); // join to transfer list to string
+  // console.log(html);
+  suggestions.innerHTML = html;
+};
+
+document.querySelector("input.search").addEventListener("input", makeSuggestions); // only return the single character
+// document.querySelector("input.search").addEventListener("change", makeSuggestions); // only change when click the page
+// document.querySelector("input.search").addEventListener("keyup", makeSuggestions); // only return the key
 
 </script>
 </body>

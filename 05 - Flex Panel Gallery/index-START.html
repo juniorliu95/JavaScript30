@@ -26,6 +26,7 @@
     .panels {
       min-height: 100vh;
       overflow: hidden;
+      display: flex;
     }
 
     .panel {
@@ -36,13 +37,19 @@
       align-items: center;
       /* Safari transitionend event.propertyName === flex */
       /* Chrome + FF transitionend event.propertyName === flex-grow */
-      transition:
+      transition: /* we can define for different types of transitions separately */
         font-size 0.7s cubic-bezier(0.61,-0.19, 0.7,-0.11),
         flex 0.7s cubic-bezier(0.61,-0.19, 0.7,-0.11),
         background 0.2s;
       font-size: 20px;
       background-size: cover;
       background-position: center;
+
+      flex: 1;/* this is for the panel it self */
+      /* following are for the flexbox in the panel */
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
     }
 
     .panel1 { background-image:url(https://source.unsplash.com/gYl-UtwNg_I/1500x1500); }
@@ -56,6 +63,10 @@
       margin: 0;
       width: 100%;
       transition: transform 0.5s;
+      flex: 1 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .panel p {
@@ -65,12 +76,29 @@
       font-size: 2em;
     }
     
-    .panel p:nth-child(2) {
-      font-size: 4em;
+    /* moving the first and third word */
+    .panel > p:nth-child(1) {
+      transform: translateY(-100%);
+    }
+    .panel > p:nth-child(3) {
+      transform: translateY(100%);
+    }
+    .panel.active-panel > p:nth-child(1) {
+      transform: translateY(0);
+    }
+    .panel.active-panel > p:nth-child(3) {
+      transform: translateY(0);
     }
 
+    /* make the middle word bigger */
+    .panel p:nth-child(2) {
+      font-size: 4em; /*dynamic, 4 times of the original font-size */
+    }
+
+    /* when panel opened */
     .panel.open {
       font-size: 40px;
+      flex-grow: 10;
     }
 
   </style>
@@ -105,6 +133,12 @@
   </div>
 
   <script>
+    const panels = document.querySelectorAll('.panel');
+    function panelUpdate() {
+      this.classList.toggle('open');
+      this.classList.toggle('active-panel');
+    };
+    panels.forEach(panel => panel.addEventListener('click', panelUpdate));
 
   </script>
 
