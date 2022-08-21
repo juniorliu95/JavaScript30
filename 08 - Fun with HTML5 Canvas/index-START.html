@@ -5,8 +5,51 @@
   <title>HTML5 Canvas</title>
 </head>
 <body>
+<p id="hint" style="box-sizing:border-box;height:5%;overflow:visible">Press <em style="color:red">Esc</em> to clean the canvas!</p>
 <canvas id="draw" width="800" height="800"></canvas>
 <script>
+  const canvas = document.querySelector("#draw");
+  const para = document.getElementById("hint");
+  canvas.height = window.innerHeight * (1-parseFloat(para.style.height) / 100);
+  canvas.width = window.innerWidth;
+
+  const ctx = canvas.getContext("2d");
+  let isDrawing = false;
+  let [preX, preY] = [0, 0];
+  let hue = 0;
+
+  function draw(e){
+    //console.log(e);
+    if (!isDrawing) return;
+    ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+
+    ctx.beginPath();
+    ctx.moveTo(preX, preY);
+    [preX, preY] = [e.offsetX, e.offsetY];
+    ctx.lineTo(preX, preY);
+    ctx.stroke();
+
+    hue++;
+    if (hue > 300){
+      hue = 0;
+    };
+  };
+
+  function clean(e){
+    isDrawing = false
+    //console.log(e);
+    if (e.key = "Escape"){
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    };
+    return;
+  };
+
+  canvas.addEventListener("mousedown", e => {isDrawing = true; [preX, preY] = [e.offsetX, e.offsetY];});
+  canvas.addEventListener("mouseup", () => isDrawing = false);
+  canvas.addEventListener("mousemove", draw);
+  canvas.addEventListener("mouseout", () => isDrawing = false);
+  document.addEventListener("keydown", clean);
+
 </script>
 
 <style>
