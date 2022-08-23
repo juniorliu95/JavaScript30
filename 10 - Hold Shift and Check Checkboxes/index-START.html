@@ -96,6 +96,42 @@
   </div>
 
 <script>
+  const checks = document.querySelectorAll(".item > input[type='checkbox']");
+  let onShift = false;
+  let lastChecked;
+
+  function mulCheck(e)
+  {
+    let inbetween = false;
+    if (onShift && this.checked)
+    {
+      checks.forEach(check =>
+      {
+        if (check === this || check === lastChecked){
+          inbetween = !inbetween;
+        };
+
+        if (inbetween){
+          check.checked = true;
+        };
+      });
+    };
+
+    lastChecked = this;
+  };
+
+  function changeShift(e){
+    // console.log(e);
+    if (e.key == 'Shift'){
+      onShift = !onShift;
+    };
+    // console.log(onShift);
+  };
+
+  document.addEventListener("keydown", changeShift);
+  document.addEventListener("keyup", changeShift);
+  checks.forEach(check => check.addEventListener("change", mulCheck));
+
 </script>
 </body>
 </html>
