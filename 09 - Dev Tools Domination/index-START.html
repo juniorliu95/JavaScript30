@@ -18,29 +18,42 @@
     }
 
     // Regular
-
+    console.log("hello");
     // Interpolated
-
+    console.log("hello %s %s", "world", "!");
     // Styled
-
+    console.log("%c hello world!", "font-size:20px");
     // warning!
-
+    console.warn("warning");
     // Error :|
-
+    console.error("error");
     // Info
-
+    console.info("info")
     // Testing
-
+    console.assert(1==2, "that is wrong!");
     // clearing
-
+    //console.clear();
     // Viewing DOM Elements
-
+    const p = document.getElementsByTagName("p")[0];
+    console.dir(p);
     // Grouping together
-
+    dogs.forEach(dog => {
+      console.groupCollapsed(dog.name); // will collapse the log between this and groupend
+      console.log("hello, dog!");
+      console.log("dog name: %s, dog age: %d", dog.name, dog.age);
+      console.groupEnd(dog.name);
+    });
     // counting
-
+    console.count("pang");
+    console.count("bao");
+    console.count("pang");
+    console.count("bao");
     // timing
-
+    console.time("wait");
+    fetch("https://api.github.com/users/wesbos")
+      .then(f => f.json())
+      .then(data => console.log("hello!"));
+    console.timeEnd("wait"); // pair with time, to print the time spent
   </script>
 </body>
 </html>
