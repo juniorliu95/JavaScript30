@@ -7,6 +7,23 @@
 </head>
 <body>
 <script>
+  const record = [];
+  const secretCode = 'asdfg';
+
+  function adjustRecord(e){
+    const k = e.key;
+    record.push(k);
+    const l = record.length;
+    if (l > secretCode.length){
+      record.shift();
+    }
+
+    if (record.join("") == secretCode)
+      console.log("Correct!");
+    console.log(record);
+  };
+  document.addEventListener("keypress", adjustRecord);
+
 </script>
 </body>
 </html>
