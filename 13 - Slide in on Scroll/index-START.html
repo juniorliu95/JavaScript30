@@ -43,6 +43,7 @@
   </div>
 
   <script>
+    // debounce is used to decrease the frequency of calling a function
     function debounce(func, wait = 20, immediate = true) {
       var timeout;
       return function() {
@@ -51,17 +52,21 @@
           timeout = null;
           if (!immediate) func.apply(context, args);
         };
+        //console.count(timeout);
         var callNow = immediate && !timeout;
         clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
+        timeout = setTimeout(later, wait);//`timeout` is the id for this time out.
         if (callNow) func.apply(context, args);
       };
     }
     
-    function bounce
+    function checkPos(e){
+      console.count(e);
+
+    };
 
     const images = document.querySelectorAll("img.slide-in");
-    images.forEach(image => image.addEventListener("scroll", ));
+    window.addEventListener("scroll", debounce(checkPos));
 
   </script>
 
