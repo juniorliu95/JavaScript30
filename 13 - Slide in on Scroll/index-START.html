@@ -61,8 +61,20 @@
     }
     
     function checkPos(e){
-      console.count(e);
+      // console.log(e);
+      images.forEach(image => {
+        const height = image.height;
+        const y = image.y;// from page top to image top
+        const by = window.innerHeight - y;
+        let appear = false;
 
+        if (y <= -height || y >= height) {
+          image.classList.remove("active");
+        } else if (by > 0.5 * height || by < height){
+          image.classList.add("active");
+        }
+
+      });
     };
 
     const images = document.querySelectorAll("img.slide-in");
