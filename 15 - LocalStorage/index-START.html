@@ -34,6 +34,8 @@
   let items = JSON.parse(localStorage.getItem('items')) || []; // collect the items
   const clear = document.querySelector("input[value='Clear']");
 
+  makeItemVis(items, itemsList); // load the saved items
+
   function submitFunc(e){
     e.preventDefault(); // prevent defualt submit function
     // console.log("hello");
@@ -44,9 +46,9 @@
       done: false
     };
     items.push(item);
-    makeItemVis(items, itemsList);// * must before setItem?
-
+    
     localStorage.setItem("items", JSON.stringify(items));
+    makeItemVis(items, itemsList);
 
     this.reset(); //* reset the input for the form
   };
@@ -62,9 +64,17 @@
       `;
     }).join("");
   };
-
+  let temp;
   function changeMark(e){
-    console.log(e);
+    // console.log(e);
+    //e.target.matches('input');
+    if (e.target.localName == 'input'){
+      temp = e.target;
+      const idx = parseInt(e.target.dataset.index);
+      items[idx].done = ! items[idx].done;
+      makeItemVis(items, itemsList);
+      localStorage.setItem("items", JSON.stringify(items));
+    }
   };
 
   function clearFunc(){
