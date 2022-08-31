@@ -23,8 +23,8 @@
   .hero {
     min-height: 100vh;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: center; /*vertical center flexbox items*/
+    align-items: center; /*horizontal center flexbox items*/
     color: black;
   }
 
@@ -35,6 +35,26 @@
   </style>
 
 <script>
+  const hero = document.querySelector(".hero");
+  const text = document.querySelector(".hero h1");
+
+  function moveShadow(e){
+    if (this !== e.target) console.log(e.target); // why this can not be e.target
+    const dx = e.movementX;
+    const dy = e.movementY;
+    // console.log(dx, dy);
+    const times = 2;
+
+    text.style.textShadow = 
+    `
+    ${10+times*dx}px ${10+times*dy}px 0 rgba(0,0,0,1),
+    ${10-times*dx}px ${10+times*dy}px 0 rgba(100,100,0,1),
+    ${10+times*dx}px ${10-times*dy}px 0 rgba(0,100,100,1),
+    ${10-times*dx}px ${10-times*dy}px 0 rgba(100,0,100,1)
+    `;
+  };
+  hero.addEventListener("mousemove", moveShadow);
+
 </script>
 </body>
 </html>
