@@ -47,7 +47,24 @@
 
 <script>
 const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
+// to sort the band names not based on "the", "a/an"
+function changeBandName(band){
+  return band.replace(/^(the |a |an )/i, "").trim();
+};
+// console.log(changeBandName("the good one"));
 
+bands.sort((a, b) => {
+  a = changeBandName(a), b = changeBandName(b);
+  // console.log(a, b);
+  if (a > b) return 1;
+  else return -1;
+});
+
+// add band names to the ul
+const bandNames = bands.map(band => `<li>${band}</li>`).join('');
+// console.log(bandNames);
+const ul = document.querySelector("#bands");
+ul.innerHTML = bandNames;
 
 </script>
 
