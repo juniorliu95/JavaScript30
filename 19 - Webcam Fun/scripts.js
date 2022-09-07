@@ -13,8 +13,28 @@ function getVideo(){
     })
 };
 
-function takePhoto(){
+function paintToCanvas(){
+    const width = video.videoWidth;
+    const height = video.videoHeight;
+    canvas.width = width;
+    canvas.height = height;
     
-}; 
+    setInterval(() => {
+        ctx.drawImage(video, 0, 0, width, height);
+    }, 20);
+};
+
+function takePhoto(){
+    snap.currentTime = 0;
+    snap.play();
+    const photo = canvas.toDataURL('image/jpeg');
+    const link = document.createElement('a');
+    link.href = photo;
+    link.setAttribute('download', 'handsome');
+    link.innerHTML = `<img src="${photo}alt="Handsome Man" /">`;
+    // link.textContent = "Download image";
+    strip.insertBefore(link, strip.firstChild);
+};
 
 getVideo();
+video.addEventListener("canplay", paintToCanvas);
