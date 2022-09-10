@@ -4,6 +4,7 @@ const ctx = canvas.getContext('2d');
 const strip = document.querySelector('.strip');
 const snap = document.querySelector('.snap');
 const panel = document.querySelector('.controls');
+const rgbs = document.querySelectorAll('.rgb input[type="range"]');
 
 let width=canvas.width;
 let height=canvas.height;
@@ -42,11 +43,40 @@ function paintToCanvas(){
     setAspectRatio();
     setInterval(() => {
         ctx.drawImage(video, 0, 0, width, height);
-        // let pixels = ctx.getImageData(0, 0, width, height);
+        let pixels = ctx.getImageData(0, 0, width, height);
+        pixels = rgbCrop(pixels);
         // pixels = rgbSplit(pixels);
-        // ctx.putImageData(pixels, 0, 0);
-    }, 16);
+        ctx.putImageData(pixels, 0, 0);
+    }, 20);
 };
+
+function rgbCrop(pixels){
+    // console.log(pixels);
+    for (let i = 0; i < pixels.data.length; i+=4) {
+        for (let j=0;j<3;j++){
+            // debugger;
+            if (pixels.data[i+j] < rgbs[j*2].value){
+                // debugger;
+                pixels.data[i+j] = rgbs[j*2].value;
+            };
+            if (pixels.data[i+j] > rgbs[j*2+1].value){
+                pixels.data[i+j] = rgbs[j*2+1].value;
+            };
+                
+        };
+    };
+    return pixels;
+};
+
+function rgbSplit(pixels){
+    for (let i = 0; i < pixels.data.length; i+=4){
+        // dont need to care about undefined.
+        pixels.data[i-50] = pixels.data[i];
+        pixels.data[i+250] = pixels.data[i+1];
+        pixels.data[i-500] = pixels.data[i+2];
+    };
+    return pixels;
+}
 
 function takePhoto(){
     snap.currentTime = 0;
