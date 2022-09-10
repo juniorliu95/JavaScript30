@@ -4,7 +4,6 @@ const ctx = canvas.getContext('2d');
 const strip = document.querySelector('.strip');
 const snap = document.querySelector('.snap');
 const panel = document.querySelector('.controls');
-const rgbs = document.querySelectorAll('.rgb input[type="range"]');
 
 let width=canvas.width;
 let height=canvas.height;
@@ -51,20 +50,26 @@ function paintToCanvas(){
 };
 
 function rgbCrop(pixels){
-    // console.log(pixels);
-    for (let i = 0; i < pixels.data.length; i+=4) {
-        for (let j=0;j<3;j++){
-            // debugger;
-            if (pixels.data[i+j] < rgbs[j*2].value){
-                // debugger;
-                pixels.data[i+j] = rgbs[j*2].value;
-            };
-            if (pixels.data[i+j] > rgbs[j*2+1].value){
-                pixels.data[i+j] = rgbs[j*2+1].value;
-            };
-                
+    const rgbs = {};
+    document.querySelectorAll('.rgb input[type="range"]').forEach(rgb => rgbs[rgb.name] = parseInt(rgb.value));
+
+    for (let i = 0; i < pixels.data.length; i+=4){
+        const red = pixels.data[i];
+        const green = pixels.data[i+1];
+        const blue = pixels.data[i+2];
+        // pixels.data[i+3] = 0;
+        // debugger;
+        if (red >= rgbs["rmin"]
+        && green >= rgbs["gmin"]
+        && blue >= rgbs["bmin"]
+        && red <= rgbs["rmax"]
+        && green <= rgbs["gmax"]
+        && blue <= rgbs["bmax"]){
+            pixels.data[i+3] = 0;
         };
-    };
+        
+    }
+
     return pixels;
 };
 
