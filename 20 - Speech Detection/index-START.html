@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
   <meta charset="UTF-8">
   <title>Speech Detection</title>
@@ -10,9 +10,34 @@
   </div>
 
 <script>
+  const words = document.querySelector(".words");
+  let p = document.createElement("p");
+  words.appendChild(p);
+
   window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = new SpeechRecognition();
+  recognition.interimResults = true; // show the results while speaking
 
 
+  function getSpeech(e){
+    // debugger;
+    // console.log(e);
+    // const text = e.results[0][0].transcript;
+    const text = Array.from(e.results)
+                .map(result => result[0].transcript).join("");
+    p.innerHTML = text;
+
+    // only add new p when sentence ends
+    if (e.results[0].isFinal){
+      p = document.createElement("p");
+      words.appendChild(p);
+    }
+
+  };
+
+  recognition.addEventListener("result", getSpeech);
+  recognition.addEventListener("end", ()=>{recognition.start()});
+  recognition.start();
 </script>
 
 
