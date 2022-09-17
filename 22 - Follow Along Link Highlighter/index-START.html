@@ -27,6 +27,24 @@
 
   <script>
     // 👀👀👀👀👀👀👀👀👀👀👀👀👀👀👀
+    const aNodes = document.querySelectorAll("a");
+
+    const div = document.createElement("span");
+    div.classList.add("highlight");
+    document.body.appendChild(div);
+
+    function lightChanged() {
+      const bRect = this.getBoundingClientRect();
+      div.style.width = `${bRect.width}px`;
+      div.style.height = `${bRect.height}px`;
+      div.style.transform = `translate(${bRect.left}px, ${bRect.top}px)`;
+      // debugger;
+    };
+
+    aNodes.forEach(aNode => {
+      aNode.addEventListener("mouseenter", lightChanged);
+    });
+
   </script>
 </body>
 </html>
