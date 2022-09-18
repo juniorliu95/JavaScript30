@@ -29,8 +29,6 @@
     </div>
 
 <script>
-  const synth = window.speechSynthesis;
-
   const msg = new SpeechSynthesisUtterance();
   let voices = [];
   const voicesDropdown = document.querySelector('[name="voice"]');
@@ -39,14 +37,14 @@
   const stopButton = document.querySelector('#stop');
 
   function stopVoice() {
-    synth.cancel();
+    speechSynthesis.cancel();
   };
 
   function readVoice() {
     stopVoice();
     const text = options[2].value;
     msg.text = text;
-    synth.speak(msg);
+    speechSynthesis.speak(msg);
   };
 
   function changeVoice() {
@@ -56,19 +54,25 @@
     const value = this.value;
     msg[op] = value;
     // debugger;
-    synth.speak(msg);
+    speechSynthesis.speak(msg);
   };
 
   // import all the possible voices
   function makeVoiceList() {
-    // console.log(this); // this is the window!
-    voiceOpts = synth.getVoices();
-    console.log(voiceOpts);
-    // debugger;
+    // console.log(this);
+    voices = this.getVoices();
+    voicesDropdown.innerHTML = voices
+    .filter(voice => voice.lang.includes("en"))
+    .map(voice =>{
+        return `<option value="${voice.name}">${voice.name} ${voice.lang}</option>`
+    }).join("");
   };
 
   function setVoice() {
-
+    const ind = this.selectedIndex;
+    const voice = voices[ind];
+    msg.voice = voice;
+    speechSynthesis.speak(msg);
   };
 
   options.forEach(option => {
@@ -76,13 +80,10 @@
       msg[option.name] = option.value;
     });
 
-  makeVoiceList();
-
   options.forEach(option => {
     option.addEventListener('change', changeVoice);
   })
-  synth.addEventListener("voiceschanged", makeVoiceList);
-
+  speechSynthesis.addEventListener("voiceschanged", makeVoiceList);
   voicesDropdown.addEventListener('change', setVoice);
   speakButton.onclick = readVoice;
   stopButton.onclick = stopVoice;
