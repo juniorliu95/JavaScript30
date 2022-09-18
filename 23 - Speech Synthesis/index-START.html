@@ -29,12 +29,63 @@
     </div>
 
 <script>
+  const synth = window.speechSynthesis;
+
   const msg = new SpeechSynthesisUtterance();
   let voices = [];
   const voicesDropdown = document.querySelector('[name="voice"]');
   const options = document.querySelectorAll('[type="range"], [name="text"]');
   const speakButton = document.querySelector('#speak');
   const stopButton = document.querySelector('#stop');
+
+  function stopVoice() {
+    synth.cancel();
+  };
+
+  function readVoice() {
+    stopVoice();
+    const text = options[2].value;
+    msg.text = text;
+    synth.speak(msg);
+  };
+
+  function changeVoice() {
+    stopVoice();
+    // debugger;
+    const op = this.name;
+    const value = this.value;
+    msg[op] = value;
+    // debugger;
+    synth.speak(msg);
+  };
+
+  // import all the possible voices
+  function makeVoiceList() {
+    // console.log(this); // this is the window!
+    voiceOpts = synth.getVoices();
+    console.log(voiceOpts);
+    // debugger;
+  };
+
+  function setVoice() {
+
+  };
+
+  options.forEach(option => {
+      // console.log(this); // here "this" is the window
+      msg[option.name] = option.value;
+    });
+
+  makeVoiceList();
+
+  options.forEach(option => {
+    option.addEventListener('change', changeVoice);
+  })
+  synth.addEventListener("voiceschanged", makeVoiceList);
+
+  voicesDropdown.addEventListener('change', setVoice);
+  speakButton.onclick = readVoice;
+  stopButton.onclick = stopVoice;
 </script>
 
 </body>
