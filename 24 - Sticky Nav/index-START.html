@@ -13,7 +13,7 @@
 
   <nav id="main">
     <ul>
-      <li class="logo"><a href="#">LOST.</a></li>
+      <li class="logo"><a href="#" onclick="topFunction()">LOST.</a></li>
       <li><a href="#">Home</a></li>
       <li><a href="#">About</a></li>
       <li><a href="#">Images</a></li>
@@ -54,6 +54,24 @@
   </div>
 
 <script>
+  function topFunction() {
+    document.documentElement.scrollTop = 0;
+  };
+
+  const nav = document.querySelector('#main');
+  const header = document.querySelector('header');
+  const topButton = document.querySelector('li.logo');
+  function scrollFunction() {
+    const dis = nav.offsetTop;
+    if (dis > header.scrollHeight) {
+      // console.log('scroll');
+      topButton.style.maxWidth = "100vw";
+    }
+    else {
+      topButton.style.maxWidth = "0";
+    };
+  };
+  document.addEventListener('scroll', scrollFunction);
 
 </script>
 
