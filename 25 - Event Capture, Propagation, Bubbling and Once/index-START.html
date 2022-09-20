@@ -39,9 +39,15 @@
     background: coral;
   }
 </style>
-
 <button></button>
 <script>
+const divs = document.querySelectorAll("div");
+function logText(e) {
+  console.log(this.classList.value);
+}
+
+// document.body.addEventListener("click", logText, {capture:true});
+divs.forEach((div, i) => div.addEventListener("click", logText, {capture: i%2}));
 
 </script>
 </body>
