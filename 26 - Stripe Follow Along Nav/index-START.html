@@ -73,7 +73,7 @@
       </li>
     </ul>
   </nav>
-
+  <div>Hello world!</div>
 <style>
   html {
     box-sizing: border-box;
@@ -220,6 +220,43 @@
 </style>
 
 <script>
+  const panels = document.querySelectorAll('.cool > li > a');
+  const frame = document.querySelector('.dropdownBackground');
+  const frameRect = frame.getBoundingClientRect();
+
+  function panelMouseEnter(){
+    // console.log(this.parentElement);
+    // change the shape of frame
+    const li = this.parentElement;
+    li.classList.add('trigger-enter'); // display of dropdown, now dropdown has shape
+    const dropdown = li.querySelector('.dropdown');
+    frame.style.width = `${dropdown.offsetWidth + 20}px`;
+    frame.style.height = `${dropdown.offsetHeight + 20}px`;
+
+    // move the frame
+    const rect = dropdown.getBoundingClientRect();
+    const x = rect.top - frameRect.top;
+    const y = rect.left - frameRect.left;
+    // console.log(x, y)
+    frame.style.transform = `translate(${y}px, ${x}px)`;
+
+    // show the results
+    frame.classList.add('open');
+    
+    setTimeout(() => li.classList.add('trigger-enter-active'), 150);
+  };
+
+
+  function panelMouseLeave(){
+    this.parentElement.classList.remove('trigger-enter');
+    this.parentElement.classList.remove('trigger-enter-active');
+    frame.classList.remove('open');
+  };
+
+  panels.forEach(panel => {
+    panel.addEventListener("mouseenter", panelMouseEnter);
+    panel.addEventListener("mouseleave", panelMouseLeave);
+  });
 </script>
 
 </body>
