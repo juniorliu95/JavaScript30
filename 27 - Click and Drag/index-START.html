@@ -35,7 +35,30 @@
   </div>
 
 <script>
-</script>
+  const items = document.querySelector('.items');
+  let selected = false;
+  let startX; // the place the drag started
+  let scrollLeft; // the starting offsetLeft
 
+  function drag(e){
+    if (!selected) return;
+    e.preventDefault(); // prevent selecting text in it or others
+    // debugger;
+    // console.log(e.pageX);
+    const x = e.pageX - items.offsetLeft;
+    const walk = x - startX;
+    items.scrollLeft = scrollLeft - walk * 3;
+  };
+
+  items.addEventListener('mousedown', (e)=>{
+    selected = true;
+    startX = e.pageX - items.offsetLeft;
+    scrollLeft = items.scrollLeft;
+    // debugger;
+  });
+  items.addEventListener('mouseup', ()=>selected = false);
+  items.addEventListener('mouseleave', ()=>selected = false);
+  items.addEventListener('mousemove', drag);
+</script>
   </body>
 </html>
